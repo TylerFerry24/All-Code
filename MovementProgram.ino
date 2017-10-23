@@ -1,0 +1,131 @@
+#include <QueueArray.h>
+
+
+int joystickX, joystickY;
+int buttonState[6];
+
+//Creates Enumerated type "cmd" that is made up of a char and a float 
+struct cmd {
+  char dir;
+  float dis;
+};
+
+//Makes cmd a constructor of the QueueArray Library 
+QueueArray<cmd> commands;
+
+/*
+ ftPulses => Pulses for the number of feet
+ degPulses => Pulses for the number of degrees
+ */ 
+ 
+//Instantiating Variables 
+float val1;
+char val2;
+String val3;
+int E1 = 5;
+int E2 = 6;
+int M1 = 4;
+int M2 = 7;
+int x = 0;
+int test2;
+
+//Used for Millis
+unsigned long newStartTime = 0;
+
+//Method Stops the Robot
+void goStop()
+{
+  digitalWrite(E1,LOW);   
+  digitalWrite(E2,LOW);
+  newStartTime = 0;
+}
+
+/*Method reads each popped c command from serial monitor and checks 1)The letter of the direction 
+2)The distance in feet it will move or # of degrees it will rotate
+*/  
+void goMove()
+{
+  //pops the command from the Serial Monitor which is a character followed by a float  
+  cmd c = commands.pop();
+
+  //Divides popped line into character and float 
+  char dir = c.dir;
+  float dis = c.dis;
+  //Converts the float from either degrees into degPulses or feet into ftPulses
+  newStartTime = (dir=='r' || dir=='l') ? (millis()+dis*13.8) : (millis()+(dis*790));
+
+  //Checks which direction to go
+  if (dir == 'f')
+  { 
+    analogWrite (E1,255);      //Moves Forward indefinitely 
+    digitalWrite(M1,HIGH);    
+    analogWrite (E2,255);    
+    digitalWrite(M2,HIGH);
+  }
+  else if (dir == 'b')
+  {
+    analogWrite (E1,255);      //Moves Backward indefinitely 
+    digitalWrite(M1,LOW);    
+    analogWrite (E2,255);    
+    digitalWrite(M2,LOW);
+  }
+  else if (dir == 'l')
+  {
+    analogWrite (E1,150);      //Moves Left indefinitely 
+    digitalWrite(M1,LOW);    
+    analogWrite (E2,150);    
+    digitalWrite(M2,HIGH);
+  }
+  else if (dir == 'r')
+  {
+    analogWrite (E1,150);     //Moves Right indefinitely       
+    digitalWrite(M1,HIGH);    
+    analogWrite (E2,150);    
+    digitalWrite(M2,LOW);
+  }
+}
+void setup()
+{
+  int i;
+  for(i=4;i<=7;i++)
+    pinMode(i, OUTPUT); 
+
+  Serial.begin(9600);      //Set Baud  
+
+  //Key for Movement for the User 
+  Serial.println ("Key to Robot Movement: ");
+  Serial.println ("Forward => \"f\" followed by the number of feet you want it to move" );
+  Serial.println ("Backward => \"b\" followed by the number of feet you want it to move" );
+  Serial.println ("CounterClockwise(Left) => \"l\" followed by the number of degrees you want it to rotate counterclockwise");
+  Serial.println ("Clockwise(Right) => \"r\" followed by the number of degrees you want it to rotate clockwise");
+
+}
+
+
+void loop()
+{
+  //Acts as a timer to see how long the wheels should spin before the goStop() method is called 
+  if(millis() > newStartTime) {
+    if( !commands.isEmpty() ){
+      goMove();
+    } else {
+      goStop();
+    }
+  } 
+
+  
+  while( Serial.available() ){
+    //Makes sure that the float is actually a letter 
+    if( (Serial.peek() >= 'A' && Serial.peek() <= 'Z') || (Serial.peek() >= 'a' && Serial.peek() <= 'z') ){
+      //instantiates variable "c" as type cmd 
+      cmd c;
+      //Reads Serial monitor for first float and char 
+      c.dir = Serial.read();
+      c.dis = Serial.parseFloat();
+      commands.push(c);
+    }
+  }
+}
+
+  
+ 
