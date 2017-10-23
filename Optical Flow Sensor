@@ -262,11 +262,11 @@ void loop()
   if(Y < 0) Serial.print("-");
   if(abs(Y) < 10) Serial.print("0");
   Serial.println(abs(Y));
-  /*
+  
   Serial.print((int)md.dx); Serial.print(',');
   Serial.println((int)md.dy); //Serial.println(')');
   // Serial.println(md.max_pix);
-  */
+  
   delay(10);
   
   #endif
