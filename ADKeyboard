@@ -1,5 +1,6 @@
 /*
- The ADKeyboard module is supposed to be faced with the yellow button facing up. Yellow is forward, red is right, blue is backward, green is left, white is stop
+ The ADKeyboard module is supposed to be faced with the yellow button facing up. Yellow is forward, red is right, 
+ blue is backward, green is left, white is stop
  */
  //Instantiates variables
 int adc_key_val[5] ={600,650, 700,  800, 900 };
