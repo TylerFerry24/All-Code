@@ -1,4 +1,3 @@
-
 1) You will first need to download the GoBLE app from the Apple App Store, it is free
 
 2) You will then need to download the the GoBLE library in the folder I attached to this folder
@@ -17,3 +16,5 @@ uploading.
  
 6) If this doesn't work, feel free to use the official GoBLE wiki at http://www.instructables.com/id/How-to-Build-a-Robot-Lesson-7Build
 -a-Bluetooth-Con/
+
+7) If I copied the library incorrectly, the library is here https://github.com/CainZ/GoBle/tree/master/library/GoBLE
