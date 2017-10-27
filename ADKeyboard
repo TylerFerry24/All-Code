@@ -1,0 +1,94 @@
+/*
+ The ADKeyboard module is supposed to be faced with the yellow button facing up. Yellow is forward, red is right, blue is backward, green is left, white is stop
+ */
+ //Instantiates variables
+int adc_key_val[5] ={600,650, 700,  800, 900 };
+int NUM_KEYS = 5;
+int adc_key_in;
+int key=-1;
+int oldkey=-1;
+int E1 = 5;
+int E2 = 6;
+int M1 = 4;
+int M2 = 7;
+int joystickX, joystickY;
+int buttonState[6];
+
+//Stops the motors
+void goStop()
+{
+  digitalWrite(E1,LOW);   
+  digitalWrite(E2,LOW);
+}
+
+//get_key method, finds which key is pressed
+int get_key(unsigned int input)
+{
+    int k;
+    for (k = 0; k < NUM_KEYS; k++)
+    {
+      if (input < adc_key_val[k])
+     {
+            return k;
+        }
+   }
+       if (k >= NUM_KEYS)k = -1;  // No valid key pressed
+       return k;
+}
+void setup() {
+  pinMode(13, OUTPUT);  //we'll use the debug LED to output a heartbeat
+  Serial.begin(9600); // 9600 bps
+
+}
+
+void loop() {
+  adc_key_in = analogRead(0);    // read the value from the sensor 
+  digitalWrite(13,LOW); 
+  key = get_key(adc_key_in);  // convert into key press
+ 
+  if (key != oldkey)   // if keypress is detected
+   {
+    delay(50);  // wait for debounce time
+    adc_key_in = analogRead(0);    // read the value from the sensor 
+    key = get_key(adc_key_in);    // convert into key press
+    if (key != oldkey)    
+    {   
+      oldkey = key;
+      if (key >=0){
+        digitalWrite(13,HIGH);
+        if (key == 0)   //Yellow
+        {
+            analogWrite (E1,255);      //Moves Forward until Button is released
+            digitalWrite(M1,HIGH);    
+            analogWrite (E2,255);    
+            digitalWrite(M2,HIGH);
+        } 
+        else if (key == 2)    //Blue
+        {
+            analogWrite (E1,255);      //Moves Backward until Button is released
+            digitalWrite(M1,LOW);    
+            analogWrite (E2,255);    
+            digitalWrite(M2,LOW);
+        }  
+        else if (key == 3)    //Red
+        {
+          analogWrite (E1,155);      //Moves Right until Button is released
+          digitalWrite(M1,HIGH);    
+          analogWrite (E2,155);    
+          digitalWrite(M2,LOW);
+        }
+        else if (key == 1)    //Green
+        {
+          analogWrite (E1,155);      //Moves Left until Button is released
+          digitalWrite(M1,LOW);    
+          analogWrite (E2,155);    
+          digitalWrite(M2,HIGH); 
+        }    
+        else if (key == 4)   //Calls goStop method when no buttons are pushed(White)
+        {
+          goStop();
+        }
+      }
+    }
+  }
+}
