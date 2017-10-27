@@ -1,1 +1,77 @@
+#include <GoBLE.h>
+
+//Initialized Variables
+int ledEvent;
+int E1 = 5;
+int E2 = 6;
+int M1 = 4;
+int M2 = 7;
+int joystickX, joystickY;
+int buttonState[6];
+
+//Stops the motors
+void goStop()
+{
+  digitalWrite(E1,LOW);   
+  digitalWrite(E2,LOW);
+}
+
+void setup(){
+    int i;
+    for(i=4;i<=7;i++)
+      pinMode(i, OUTPUT);     //Sets all 4 pins to OUTPUT mode
+  Serial.begin(115200);   //Set Baud
+  Goble.begin();    //Starts Goble Functions
+}
+
+void loop() {   
+  if(Goble.available()){
+    //Reads X and Y Joystick values in case they wanted to be used
+    joystickX = Goble.readJoystickX();    
+    joystickY = Goble.readJoystickY();
+
+    //Reads all the button states on the app
+    buttonState[SWITCH_UP]     = Goble.readSwitchUp();
+    buttonState[SWITCH_DOWN]   = Goble.readSwitchDown();
+    buttonState[SWITCH_LEFT]   = Goble.readSwitchLeft();
+    buttonState[SWITCH_RIGHT]  = Goble.readSwitchRight();
+    buttonState[SWITCH_SELECT] = Goble.readSwitchSelect();
+    buttonState[SWITCH_START]  = Goble.readSwitchStart();
+    
+
+    if (buttonState[1] == PRESSED)
+    {
+        analogWrite (E1,255);      //Moves Forward until Button is released
+        digitalWrite(M1,HIGH);    
+        analogWrite (E2,255);    
+        digitalWrite(M2,HIGH);
+    } 
+    else if (buttonState[3] == PRESSED)
+    {
+        analogWrite (E1,255);      //Moves Backward until Button is released
+        digitalWrite(M1,LOW);    
+        analogWrite (E2,255);    
+        digitalWrite(M2,LOW);
+    }  
+    else if (buttonState[2] == PRESSED)
+    {
+      analogWrite (E1,155);      //Moves Right until Button is released
+      digitalWrite(M1,HIGH);    
+      analogWrite (E2,155);    
+      digitalWrite(M2,LOW);
+    }
+    else if (buttonState[4] == PRESSED)
+    {
+      analogWrite (E1,155);      //Moves Left until Button is released
+      digitalWrite(M1,LOW);    
+      analogWrite (E2,155);    
+      digitalWrite(M2,HIGH); 
+    }    
+    else if (buttonState[1] == RELEASED)   //Calls goStop method when no buttons are pushed
+    {
+      goStop();
+    }
+  }
+}
+
 
