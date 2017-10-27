@@ -1,0 +1,33 @@
+/*
+  This program is meant to move the robot forward when pressed 
+ */
+int ledPin = 13;                // Connect LED on pin 13, or use the onboard one
+int KEY = 2;                 // Connect Touch sensor on Digital Pin 2
+int ledEvent;
+int E1 = 5;
+int E2 = 6;
+int M1 = 4;
+int M2 = 7;
+
+void setup(){
+  int i;
+  for(i=4;i<=7;i++)
+    pinMode(i, OUTPUT);     //Sets all 4 pins to OUTPUT mode
+  Serial.begin(9600);   //Set Baud
+  pinMode(ledPin, OUTPUT);      // Set ledPin to output mode
+  pinMode(KEY, INPUT);       //Set touch sensor pin to input mode
+}
+
+void loop(){
+   if(digitalRead(KEY)==HIGH) {      //Read Touch sensor signal
+     analogWrite (E1,255);           //Moves Forward until Button is released
+     digitalWrite(M1,HIGH);    
+     analogWrite (E2,255);    
+     digitalWrite(M2,HIGH);
+   }
+   else{
+    digitalWrite(ledPin, LOW);    // if Touch sensor is LOW, then turn off the led
+    digitalWrite(E1,LOW);         //Stops the Robot
+    digitalWrite(E2,LOW);
+   }
+}
