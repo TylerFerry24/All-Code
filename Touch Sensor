@@ -1,5 +1,5 @@
 /*
-  This program is meant to move the robot forward when pressed 
+  This program is meant to move the robot forward when touch sensor is pressed 
  */
 int ledPin = 13;                // Connect LED on pin 13, or use the onboard one
 int KEY = 2;                 // Connect Touch sensor on Digital Pin 2
