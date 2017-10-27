@@ -1,0 +1,11 @@
+1) You will first need to download the GoBLE app from the Apple App Store, it is free
+
+2) You will then need to download the the GoBLE library in the folder I attached to this folder
+
+3) This is where things get hard because the bluetooth doesn't always cooperate. My best bet is to try uploading the code then turning on bluetooth on your phone without connecting to "Bluno". Then you will want to open the GoBLE app and the red magnifying glass in the top middle should turn teal. If this doesn't work try troubleshooting using different ways to connect.
+
+4) This code is designed so that it will move when one of the 4 buttons on the right is pressed. It will go forward when the top button is pressed, right when the right button is pressed, backwards when the lower button is pressed, and left when the left button is pressed. The robot will stop when no buttons are being pressed. I did not have time to make something that incorporates the joystick or 2 middle buttons but feel free to test it.
+
+5) If you want to alter the code, make sure that bluetooth is turned off and that you completely close out of the GoBLE app before uploading.
+ 
+6) If this doesn't work, feel free to use the official GoBLE wiki at http://www.instructables.com/id/How-to-Build-a-Robot-Lesson-7Build-a-Bluetooth-Con/
