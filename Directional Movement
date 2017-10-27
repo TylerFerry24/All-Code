@@ -1,3 +1,9 @@
+/*
+This code is designed to recieve data from the user and move accordingly. It can move forward, backward, left, and right a certain
+amount of feet (forward or backward) or degrees (left or right). With the use of a QueueArray I am able to accept multiple commands 
+at the same time. Testing of this robot can be seen on my YouTube channel at https://www.youtube.com/watch?v=21xvtBaX_mY
+*/
+
 #include <QueueArray.h>
 
 
